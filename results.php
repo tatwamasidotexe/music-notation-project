@@ -25,15 +25,30 @@ try {
 
     try {
         if($_POST["search"]) {
-            $title = (string)test_input($_POST["search"]);
-            if(str_contains($title, "&&")) {
-                // divide the string into before and after AND, check for both
-            }
-            // echo $title;
+
+            $input = (string)test_input($_POST["search"]);
+
+            //the input string format has to be specified. example: "title= ami chini go chini & taal_name= ek taal"
+            parse_str($input, $inputArray);
+
+            // a list of all search parameters we can work with for now
+            $search_parameters = ['title', 'genre', 'taal_name', 'raag_name', 'thaat'];
+
+            // a list of all the parameters the user is searching for
+            $input_parameters = array_keys($inputArray);
+
+            // need a way to locate the separate xml tags to formulate the queries
+            $addresses = ["info/title", "taal/taal_name"];
+
+
             // create query instance
-            $input = 'for $song in collection("swarabitan")/swaralipixml
-            where $song/info/title/text() = "'.$title.'" let $lines := $song/sheet return <result>{$song/info/title/text()},<br></br>{$lines}</result>';
-            $query = $session->query($input);
+            $query_str = "for \$song in collection(\"swarabitan\")/swaralipixml 
+            where \$song/{$adresses[0]}/text() = \"{$inputArray[$input_parameters[0]]}\" and 
+            \$song/{$adresses[1]}/text() = \"{$inputArray[$input_parameters[1]]}\" 
+            let \$song_lines := \$song/sheet 
+            return <result>{\$song_lines}</result>";
+
+            $query = $session->query($query_str);
             
             // printing each query result
             foreach($query as $result) {
