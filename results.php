@@ -43,8 +43,8 @@ try {
 
             // create query instance
             $query_str = "for \$song in collection(\"swarabitan\")/swaralipixml 
-            where \$song/{$adresses[0]}/text() = \"{$inputArray[$input_parameters[0]]}\" and 
-            \$song/{$adresses[1]}/text() = \"{$inputArray[$input_parameters[1]]}\" 
+            where \$song/{$addresses[0]}/text() = \"{$inputArray[$input_parameters[0]]}\" and 
+            \$song/{$addresses[1]}/text() = \"{$inputArray[$input_parameters[1]]}\" 
             let \$song_lines := \$song/sheet 
             return <result>{\$song_lines}</result>";
 
