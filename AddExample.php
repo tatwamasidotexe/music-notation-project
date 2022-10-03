@@ -37,7 +37,7 @@ try {
 
     // drop database
     $session->execute("drop db database");
-
+ 
     // close session
     $session->close();
 } catch (BaseXException $e) {
